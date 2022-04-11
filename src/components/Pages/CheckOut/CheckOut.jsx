@@ -1,13 +1,13 @@
 import React from "react";
 
-const Contact = () => {
+const CheckOut = () => {
   return (
-    <section id="contact">
+    <section id="CheckOut">
       <div className="container">
-        <h1>Contact</h1>
+        <h1>CheckOut</h1>
       </div>
     </section>
   );
 };
 
-export default Contact;
+export default CheckOut;

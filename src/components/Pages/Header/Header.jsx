@@ -22,7 +22,7 @@ const Header = () => {
                 <NavLink to="/about">About</NavLink>
               </li>
               <li>
-                <NavLink to="/contact">Contact</NavLink>
+                <NavLink to="/checkout">CheckOut</NavLink>
               </li>
               <li className="user">
                 <span>
@@ -43,7 +43,7 @@ const Header = () => {
 
 const HeaderContainer = styled.header`
   position: relative;
-  padding: 1rem 0rem;
+  padding: 1.4rem 0rem;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.08);
   .navbar {
     display: flex;

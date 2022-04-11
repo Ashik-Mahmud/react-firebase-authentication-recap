@@ -47,3 +47,15 @@ li {
   max-width: min(100% - 2rem, 1280px);
   margin-inline: auto;
 }
+.btn {
+  background: var(--primary-color);
+  color: var(--accent-color);
+  border-radius: 4px;
+  padding: 0.6rem 2rem;
+  position: relative;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  font-family: var(--fonts);
+  cursor: pointer;
+}
