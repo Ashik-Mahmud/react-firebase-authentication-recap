@@ -1,13 +1,13 @@
 import React from "react";
 
-const Home = () => {
+const Shop = () => {
   return (
-    <section id="home">
+    <section id="shop">
       <div className="container">
-        <h1>Home</h1>
+        <h1>Shop</h1>
       </div>
     </section>
   );
 };
 
-export default Home;
+export default Shop;
