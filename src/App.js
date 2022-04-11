@@ -5,6 +5,7 @@ import CheckOut from './components/Pages/CheckOut/CheckOut';
 import Header from './components/Pages/Header/Header';
 import Home from './components/Pages/Home/Home';
 import Hotels from './components/Pages/Hotels/Hotels';
+import Login from './components/Pages/Login/Login';
 function App() {
   return (
     <>
@@ -14,6 +15,7 @@ function App() {
           <Route path='/hotels' element={<Hotels />} />
           <Route  path='/about' element={<About />} />
           <Route path='/checkout' element={<CheckOut />} />
+          <Route path='/login' element={<Login />} />
       </Routes>
       
     </>

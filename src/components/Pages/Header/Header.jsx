@@ -1,8 +1,9 @@
 import React from "react";
 import { BiUserCircle } from "react-icons/bi";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 const Header = () => {
+  const navigate = useNavigate();
   return (
     <HeaderContainer id="header">
       <div className="container">
@@ -30,9 +31,14 @@ const Header = () => {
                   Ashik Mahmud
                 </span>
               </li>
-              <li className="logOut-btn">
-                <span className="cursor-pointer">Log Out</span>
+              <li>
+                <button onClick={() => navigate("/login")} className="btn">
+                  Login
+                </button>
               </li>
+              {/*  <li className="logOut-btn">
+                <span className="cursor-pointer">Log Out</span>
+              </li> */}
             </ul>
           </menu>
         </nav>
@@ -43,7 +49,7 @@ const Header = () => {
 
 const HeaderContainer = styled.header`
   position: relative;
-  padding: 1.4rem 0rem;
+  padding: 1.1rem 0rem;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.08);
   .navbar {
     display: flex;
