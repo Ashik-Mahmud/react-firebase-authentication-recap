@@ -44,6 +44,6 @@ li {
   font-family: var(--poppins);
 }
 .container {
-  max-width: min(100% - 2rem, 1200px);
+  max-width: min(100% - 2rem, 1280px);
   margin-inline: auto;
 }
