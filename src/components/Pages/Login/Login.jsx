@@ -1,9 +1,20 @@
-import { GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
-import React, { useContext, useEffect } from "react";
-import { AiFillGithub, AiOutlineGoogle } from "react-icons/ai";
+import {
+  GithubAuthProvider,
+  GoogleAuthProvider,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import React, { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import {
+  AiFillGithub,
+  AiOutlineGoogle,
+  AiOutlineTwitter,
+} from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../../../App";
+import { auth } from "../../../firebase.config";
 import useFirebase from "../../../hooks/useFirebase";
 const Login = () => {
   const navigate = useNavigate();
@@ -17,6 +28,10 @@ const Login = () => {
 
   const { signInWithProvider } = useFirebase();
 
+  const [isReset, setIsReset] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   /* sign in with google */
   const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
@@ -28,34 +43,89 @@ const Login = () => {
     signInWithProvider(provider);
   };
 
+  /* handle login user */
+  const handleLoginUser = (event) => {
+    event.preventDefault();
+    if (!email) return toast.error("Email field is required.");
+    if (!isReset) {
+      if (!password) return toast.error("Password field is required.");
+    }
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        toast.success("LoggedIn Successfully done.");
+      })
+      .catch((err) => toast.error(err.message.split(":")[1]));
+  };
+
+  /* reset password */
+  const resetPassword = () => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        toast.success(`We sent you email for reset password to ${email}`);
+      })
+      .catch((err) => toast.error("Something went wrong."));
+  };
+
   return (
     <LoginContainer>
       <div className="form-wrapper">
         <h1>
-          Sign In into <span className="colorize">Account</span>
+          {isReset ? (
+            <>
+              Reset <span className="colorize">Password</span>
+            </>
+          ) : (
+            <>
+              Sign In into <span className="colorize">Account</span>
+            </>
+          )}
         </h1>
-        <form>
+        <form onSubmit={handleLoginUser}>
           <div className="input-group">
             <label htmlFor="email">Email</label>
-            <input type="email" name="email" id="email" placeholder="Email" />
-          </div>
-          <div className="input-group">
-            <label htmlFor="password">Password</label>
             <input
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Password"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              id="email"
+              placeholder="Email"
             />
           </div>
+          {!isReset && (
+            <div className="input-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                id="password"
+                placeholder="Password"
+              />
+            </div>
+          )}
+
           <p>
-            Forgot Password?
-            <span className="cursor-pointer colorize">Reset</span>
+            {isReset ? "Go to Login" : " Forgot Password?"}
+            <span
+              onClick={() => setIsReset((prev) => !prev)}
+              className="cursor-pointer colorize"
+            >
+              {isReset ? " Page" : " Reset"}
+            </span>
           </p>
           <div className="input-group">
-            <button type="submit" className="btn">
-              Sign In
-            </button>
+            {isReset ? (
+              <button onClick={resetPassword} type="button" className="btn">
+                Reset Password
+              </button>
+            ) : (
+              <button type="submit" className="btn">
+                Sign In
+              </button>
+            )}
           </div>
           <p>
             Not Account Yet?
@@ -66,15 +136,30 @@ const Login = () => {
               Create
             </span>
           </p>
-          <p className="line">Or</p>
-          <div className="btn-group">
-            <button type="button" onClick={signInWithGoogle}>
-              <AiOutlineGoogle />
-            </button>
-            <button type="button" onClick={signInWithGithub}>
-              <AiFillGithub />
-            </button>
-          </div>
+          {!isReset && (
+            <>
+              <p className="line">Or</p>
+              <div className="btn-group">
+                <button
+                  title="Google Sign In"
+                  type="button"
+                  onClick={signInWithGoogle}
+                >
+                  <AiOutlineGoogle />
+                </button>
+                <button
+                  title="Github Sign In"
+                  type="button"
+                  onClick={signInWithGithub}
+                >
+                  <AiFillGithub />
+                </button>
+                <button title="Twitter Sign In" type="button">
+                  <AiOutlineTwitter />
+                </button>
+              </div>
+            </>
+          )}
         </form>
       </div>
     </LoginContainer>
