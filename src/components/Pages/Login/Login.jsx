@@ -3,6 +3,7 @@ import {
   GoogleAuthProvider,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
+  TwitterAuthProvider,
 } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -40,6 +41,12 @@ const Login = () => {
   /* sign in with google */
   const signInWithGithub = () => {
     const provider = new GithubAuthProvider();
+    signInWithProvider(provider);
+  };
+
+  /* sign in with Twitter */
+  const signInWithTwitter = () => {
+    const provider = new TwitterAuthProvider();
     signInWithProvider(provider);
   };
 
@@ -154,7 +161,11 @@ const Login = () => {
                 >
                   <AiFillGithub />
                 </button>
-                <button title="Twitter Sign In" type="button">
+                <button
+                  title="Twitter Sign In"
+                  onClick={signInWithTwitter}
+                  type="button"
+                >
                   <AiOutlineTwitter />
                 </button>
               </div>
