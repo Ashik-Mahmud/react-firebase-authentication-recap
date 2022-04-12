@@ -21,7 +21,7 @@ function App() {
       <Header />
       <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/hotels' element={<Hotels />} />
+          <Route path='/hotels' element={<RequireAuth><Hotels /></RequireAuth>} />
           <Route  path='/about' element={<About />} />
           <Route path='/checkout' element={<RequireAuth><CheckOut /></RequireAuth>} />
           <Route path='/login' element={<Login />} />
