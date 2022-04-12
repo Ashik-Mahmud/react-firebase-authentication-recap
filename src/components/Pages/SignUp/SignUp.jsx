@@ -1,7 +1,14 @@
-import React, { useContext, useEffect } from "react";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile,
+} from "firebase/auth";
+import React, { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../../../App";
+import { auth } from "../../../firebase.config";
 const SignUp = () => {
   const navigate = useNavigate();
   const { isAuth } = useContext(AuthContext);
@@ -11,21 +18,64 @@ const SignUp = () => {
     }
   }, [navigate, isAuth]);
 
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  /* handle create user  */
+  const handleCreateUser = (event) => {
+    event.preventDefault();
+    if (!name) return toast.error("Name field is required.");
+    if (!phone) return toast.error("Phone field is required.");
+    if (!/[0-9]/.test(phone))
+      return toast.error("Phone field must be need number.");
+    if (phone.length < 11)
+      return toast.error("Phone number must need to 11 chars");
+    if (!email) return toast.error("Email field is required.");
+    if (!password) return toast.error("Password field is required.");
+
+    /* create user  */
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        updateProfile(auth.currentUser, {
+          displayName: name,
+          phoneNumber: phone,
+        }).then(() => {
+          toast.success("Account created successfully done.");
+          sendEmailVerification(auth.currentUser).then(() => {
+            toast.success(`We sent you mail for verification to ${email}`);
+          });
+        });
+        console.log(userCredential);
+      })
+      .catch((err) => toast.error(err.message.split(":")[1]));
+  };
+
   return (
     <SignUpContainer>
       <div className="form-wrapper">
         <h1>
           Sign Up into <span className="colorize">Account</span>
         </h1>
-        <form>
+        <form onSubmit={handleCreateUser}>
           <div className="input-group">
             <label htmlFor="name">Name</label>
-            <input type="text" name="name" id="name" placeholder="Name" />
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              name="name"
+              id="name"
+              placeholder="Name"
+            />
           </div>
           <div className="input-group">
             <label htmlFor="phone">Phone Number</label>
             <input
               type="text"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               name="phone"
               id="phone"
               placeholder="Phone Number"
@@ -33,12 +83,21 @@ const SignUp = () => {
           </div>
           <div className="input-group">
             <label htmlFor="email">Email</label>
-            <input type="email" name="email" id="email" placeholder="Email" />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              id="email"
+              placeholder="Email"
+            />
           </div>
           <div className="input-group">
             <label htmlFor="password">Password</label>
             <input
               type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               name="password"
               id="password"
               placeholder="Password"

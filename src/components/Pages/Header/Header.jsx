@@ -43,7 +43,7 @@ const Header = () => {
                   {isAuth && (
                     <>
                       <BiUserCircle />
-                      {user?.displayName}
+                      {user ? user?.displayName : "Unknown Person"}
                     </>
                   )}
                 </span>
