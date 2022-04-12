@@ -1,40 +1,36 @@
-import { GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import React, { useContext, useEffect } from "react";
-import { AiFillGithub, AiOutlineGoogle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../../../App";
-import useFirebase from "../../../hooks/useFirebase";
-const Login = () => {
+const SignUp = () => {
   const navigate = useNavigate();
   const { isAuth } = useContext(AuthContext);
-
   useEffect(() => {
     if (isAuth) {
       navigate("/");
     }
   }, [navigate, isAuth]);
 
-  const { signInWithProvider } = useFirebase();
-
-  /* sign in with google */
-  const signInWithGoogle = () => {
-    const provider = new GoogleAuthProvider();
-    signInWithProvider(provider);
-  };
-  /* sign in with google */
-  const signInWithGithub = () => {
-    const provider = new GithubAuthProvider();
-    signInWithProvider(provider);
-  };
-
   return (
-    <LoginContainer>
+    <SignUpContainer>
       <div className="form-wrapper">
         <h1>
-          Sign In into <span className="colorize">Account</span>
+          Sign Up into <span className="colorize">Account</span>
         </h1>
         <form>
+          <div className="input-group">
+            <label htmlFor="name">Name</label>
+            <input type="text" name="name" id="name" placeholder="Name" />
+          </div>
+          <div className="input-group">
+            <label htmlFor="phone">Phone Number</label>
+            <input
+              type="text"
+              name="phone"
+              id="phone"
+              placeholder="Phone Number"
+            />
+          </div>
           <div className="input-group">
             <label htmlFor="email">Email</label>
             <input type="email" name="email" id="email" placeholder="Email" />
@@ -48,40 +44,26 @@ const Login = () => {
               placeholder="Password"
             />
           </div>
-          <p>
-            Forgot Password?
-            <span className="cursor-pointer colorize">Reset</span>
-          </p>
+
           <div className="input-group">
-            <button type="submit" className="btn">
-              Sign In
-            </button>
+            <button className="btn">Sign Up</button>
           </div>
           <p>
-            Not Account Yet?
+            Already have account?
             <span
-              onClick={() => navigate("/sign-up")}
+              onClick={() => navigate("/login")}
               className="cursor-pointer colorize"
             >
-              Create
+              Login
             </span>
           </p>
-          <p className="line">Or</p>
-          <div className="btn-group">
-            <button type="button" onClick={signInWithGoogle}>
-              <AiOutlineGoogle />
-            </button>
-            <button type="button" onClick={signInWithGithub}>
-              <AiFillGithub />
-            </button>
-          </div>
         </form>
       </div>
-    </LoginContainer>
+    </SignUpContainer>
   );
 };
 
-const LoginContainer = styled.section`
+const SignUpContainer = styled.section`
   position: relative;
   display: grid;
   place-items: center;
@@ -103,10 +85,14 @@ const LoginContainer = styled.section`
       input {
         width: 100%;
         padding: 1rem;
-        border: 1px solid #ccc;
+        border: 2px solid #ccc;
         font-family: var(--fonts);
         font-size: 1rem;
+        outline: none;
         border-radius: 4px;
+        &:focus {
+          border: 2px solid var(--primary-color);
+        }
       }
     }
     .line {
@@ -157,4 +143,4 @@ const LoginContainer = styled.section`
     }
   }
 `;
-export default Login;
+export default SignUp;

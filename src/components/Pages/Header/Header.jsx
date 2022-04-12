@@ -1,9 +1,22 @@
-import React from "react";
+import { signOut } from "firebase/auth";
+import React, { useContext } from "react";
+import toast from "react-hot-toast";
 import { BiUserCircle } from "react-icons/bi";
 import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { AuthContext } from "../../../App";
+import { auth } from "../../../firebase.config";
 const Header = () => {
   const navigate = useNavigate();
+  const { isAuth, user, setIsAuth } = useContext(AuthContext);
+  /* handle log out  */
+  const handleLogOut = () => {
+    signOut(auth).then(() => {
+      toast.success("Log Out successfully done.");
+      navigate("/login");
+      setIsAuth(false);
+    });
+  };
   return (
     <HeaderContainer id="header">
       <div className="container">
@@ -27,18 +40,25 @@ const Header = () => {
               </li>
               <li className="user">
                 <span>
-                  <BiUserCircle />
-                  Ashik Mahmud
+                  {isAuth && (
+                    <>
+                      <BiUserCircle />
+                      {user?.displayName}
+                    </>
+                  )}
                 </span>
               </li>
-              <li>
-                <button onClick={() => navigate("/login")} className="btn">
-                  Login
-                </button>
-              </li>
-              {/*  <li className="logOut-btn">
-                <span className="cursor-pointer">Log Out</span>
-              </li> */}
+              {isAuth ? (
+                <li className="logOut-btn" onClick={handleLogOut}>
+                  <span className="cursor-pointer">Log Out</span>
+                </li>
+              ) : (
+                <li>
+                  <button onClick={() => navigate("/login")} className="btn">
+                    Login
+                  </button>
+                </li>
+              )}
             </ul>
           </menu>
         </nav>
