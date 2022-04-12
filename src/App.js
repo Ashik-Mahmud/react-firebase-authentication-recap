@@ -9,6 +9,7 @@ import Home from './components/Pages/Home/Home';
 import Hotels from './components/Pages/Hotels/Hotels';
 import Login from './components/Pages/Login/Login';
 import SignUp from './components/Pages/SignUp/SignUp';
+import RequireAuth from './components/RequireAuth/RequireAuth';
 import useFirebase from './hooks/useFirebase';
 export const AuthContext = createContext(null);
 function App() {
@@ -22,7 +23,7 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/hotels' element={<Hotels />} />
           <Route  path='/about' element={<About />} />
-          <Route path='/checkout' element={<CheckOut />} />
+          <Route path='/checkout' element={<RequireAuth><CheckOut /></RequireAuth>} />
           <Route path='/login' element={<Login />} />
           <Route path='/sign-up' element={<SignUp />} />
       </Routes>
