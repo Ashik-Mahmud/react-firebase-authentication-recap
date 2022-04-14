@@ -12,7 +12,7 @@ import {
   AiOutlineGoogle,
   AiOutlineTwitter,
 } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../../../App";
 import { auth } from "../../../firebase.config";
@@ -20,12 +20,13 @@ import useFirebase from "../../../hooks/useFirebase";
 const Login = () => {
   const navigate = useNavigate();
   const { isAuth } = useContext(AuthContext);
-
+  const location = useLocation();
+  const from = location.state?.from?.pathname;
   useEffect(() => {
     if (isAuth) {
-      navigate("/");
+      navigate(from, { replace: true });
     }
-  }, [navigate, isAuth]);
+  }, [navigate, isAuth, from]);
 
   const { signInWithProvider } = useFirebase();
 
