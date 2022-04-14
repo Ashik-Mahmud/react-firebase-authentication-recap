@@ -1,18 +1,20 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { BsChevronDoubleLeft } from "react-icons/bs";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import useHotels from "../../../hooks/useHotels";
-
 const HotelDetails = () => {
   const { hotelId } = useParams();
   const { hotels } = useHotels();
   const findHotel = hotels.find((hotel) => hotel.id.toString() === hotelId);
-
+  const navigate = useNavigate();
   return (
     <HotelDetailsContainer>
       <div className="container">
         <div className="title">
-          <span className="cursor-pointer"> </span>
+          <span onClick={() => navigate(-1)} className="cursor-pointer">
+            <BsChevronDoubleLeft />
+          </span>
           <h1>{findHotel?.name}</h1>
         </div>
         <div className="image">
@@ -37,8 +39,15 @@ const HotelDetailsContainer = styled.section`
     padding: 2rem;
     box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.05);
     border-radius: 5px;
-    h1 {
+
+    .title {
+      display: flex;
+      align-items: center;
       margin-bottom: 1rem;
+      gap: 1rem;
+      span {
+        margin-top: 0.2rem;
+      }
     }
     .image {
       width: 100%;
