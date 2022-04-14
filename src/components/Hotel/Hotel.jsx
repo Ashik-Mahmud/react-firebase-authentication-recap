@@ -1,7 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const Hotel = ({ name, img, type, rent }) => {
+const Hotel = ({ id, name, img, type, rent }) => {
+  const navigate = useNavigate();
   return (
     <HotelContainer>
       <div className="image">
@@ -13,7 +15,9 @@ const Hotel = ({ name, img, type, rent }) => {
           <span>{rent}$</span>
           <span className="colorize">{type}</span>
         </div>
-        <button className="btn btn-sm">Book Now</button>
+        <button onClick={() => navigate(`/hotel/${id}`)} className="btn btn-sm">
+          Book Now
+        </button>
       </div>
     </HotelContainer>
   );

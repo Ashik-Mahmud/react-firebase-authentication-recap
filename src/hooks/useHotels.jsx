@@ -1,17 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const useHotels = () =>{
-    const [hotels, setHotels] = useState([]);
+const useHotels = () => {
+  const [hotels, setHotels] = useState([]);
 
-    const getHotels = async() =>{
-            await axios.get('data.json').then((res)=> setHotels(res.data))
-    };
+  const getHotels = async () => {
+    await axios.get("/data.json").then((res) => setHotels(res.data));
+  };
 
-    useEffect(()=>{
-        getHotels();
-    }, [])
+  useEffect(() => {
+    getHotels();
+  }, []);
 
-    return {hotels}
+  return { hotels };
 };
 export default useHotels;
